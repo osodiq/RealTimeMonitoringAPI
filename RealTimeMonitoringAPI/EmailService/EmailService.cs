@@ -51,11 +51,11 @@ namespace RealTimeMonitoringAPI.EmailService
             EmailResponse response = new EmailResponse();
             string smtpServer = "smtp.office365.com"; 
             string port = "587"; 
-            string mailusername = "Appnotify@arm.com.ng"; 
+            string mailusername = "Appnotify@ar.com.ng"; 
             string password = "Atlas@123"; 
             bool enableSsl = true;
             string credentialRequired = "yes"; 
-            string fromEmailId = "Appnotify@arm.com.ng";  
+            string fromEmailId = "Appnotify@ar.com.ng";  
             string accountName = "Herconomy Fintech Company"; 
             string clientDomain = ""; 
 
