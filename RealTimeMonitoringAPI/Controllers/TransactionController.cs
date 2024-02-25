@@ -31,7 +31,7 @@ namespace RealTimeMonitoringAPI.Controllers
                 }
                 var req = await _repo.EvaluatePoliciesAndSendNotifications(transaction);
                 if(req == false) { return BadRequest($" UserId des not exist"); }
-                return Ok(req);
+                return Created($"transaction/{req}", true);
             }
             catch (Exception ex)
             {

@@ -31,7 +31,11 @@ namespace RealTimeMonitoringAPI.Controllers
                     return BadRequest(ModelState);
                 }
                 var res = await _repo.Register(req);
-                return Ok(res);
+                if(res.Secret != null) 
+                {
+                    return Created($"user/{res.UserId}", res.UserId);
+                }
+                return BadRequest("Registration was not successful");
             }
             catch (Exception ex)
             {
