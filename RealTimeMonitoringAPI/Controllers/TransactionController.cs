@@ -9,9 +9,11 @@ namespace RealTimeMonitoringAPI.Controllers
     public class TransactionController : Controller
     {
         private readonly IRepository _repo;
-        public TransactionController(IRepository repo)
+        private readonly ILogger<TransactionController> _log;
+        public TransactionController(IRepository repo, ILogger<TransactionController> log)
         {
             _repo = repo;
+            _log = log;
         }
         /// <summary>
         /// Endpoint for submitting transactions, evaluate policies and send email notifications when condition met.
@@ -33,6 +35,7 @@ namespace RealTimeMonitoringAPI.Controllers
             }
             catch (Exception ex)
             {
+                _log.LogError($"Post transaction error ==>  {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }

@@ -10,9 +10,11 @@ namespace RealTimeMonitoringAPI.Controllers
     public class UserController : Controller
     {
         private readonly IRepository _repo;
-        public UserController(IRepository repo)
+        private readonly ILogger<UserController> _log;
+        public UserController(IRepository repo, ILogger<UserController> log)
         {
             _repo = repo;
+            _log = log;
         }
         /// <summary>
         /// Endpoint to register new user, generate userId and save persist the record into the Db 
@@ -33,6 +35,7 @@ namespace RealTimeMonitoringAPI.Controllers
             }
             catch (Exception ex)
             {
+                _log.LogError($" New user registration error ==>  {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }

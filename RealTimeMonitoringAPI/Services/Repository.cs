@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using RealTimeMonitoringAPI.Controllers;
 using RealTimeMonitoringAPI.DTOs;
 using RealTimeMonitoringAPI.Model;
 using RealTimeMonitoringAPI.Shared;
@@ -18,13 +19,15 @@ namespace RealTimeMonitoringAPI.Services
         private readonly IConfiguration config;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IOptions<JwtSettings> _jwtOptions;
-        public Repository(RealTimeMonitoringDbContext context, IApiKeyService security, IConfiguration config, IJwtTokenGenerator jwtTokenGenerator, IOptions<JwtSettings> jwtOptions)
+        private readonly ILogger<UserController> _log;
+        public Repository(RealTimeMonitoringDbContext context, IApiKeyService security, IConfiguration config, IJwtTokenGenerator jwtTokenGenerator, IOptions<JwtSettings> jwtOptions, ILogger<UserController> log)
         {
             _context = context;
             _security = security;
             config = config;
             _jwtTokenGenerator = jwtTokenGenerator;
             _jwtOptions = jwtOptions;
+            _log = log;
         }
 
         #region Transaction
@@ -59,19 +62,23 @@ namespace RealTimeMonitoringAPI.Services
             if (req.Amount < threshold)
             {
                 transactionTier = "tier1";
-            }            
+            }
             // Implement policy evaluation logic here
+            _log.LogInformation("About to call implement policy evaluation........");
             if (IsTransactionAmountGreaterThanThreshold(req.Amount) && IsTransactionWithinOneMinute())
             {
+                _log.LogInformation("AmountGreaterThanThreshold: About to call email service........");
                 EmailService.EmailService.SendEmailNotification(body:$"TransactionID ==> {saveTransaction.Id}. <br> Transaction amount ==> {req.Amount} <br> TransactionTier ==> {transactionTier} <br> Transaction Date ==> {saveTransaction.DateCreated} <br>Description ==> Transaction amount exceeded {threshold} <br> Transaction occurred within 1 minute", config:config, type:2, emailTo: userId.UserName);
             }
             if (IsTransactionAmountLessThanThreshold(req.Amount) && IsTransactionWithinOneMinute())
             {
+                _log.LogInformation("AmountLessThanThreshold: About to call email service........");
                 EmailService.EmailService.SendEmailNotification(body: $"TransactionID ==> {saveTransaction.Id}. <br> Transaction amount ==> {req.Amount} <br> TransactionTier ==> {transactionTier} <br> Transaction Date ==> {saveTransaction.DateCreated} <br>Description ==> Transaction amount is less than {threshold} <br> Transaction occurred within 1 minute.", config:config, type:2, emailTo: userId.UserName);
             }
             
             if (IsTransactionAmountEqualToThreshold(req.Amount) && IsTransactionWithinOneMinute())
             {
+                _log.LogInformation("AmountEqualToThreshold: About to call email service........");
                 EmailService.EmailService.SendEmailNotification(body:$"TransactionID ==> {saveTransaction.Id}. <br> Transaction amount ==> {req.Amount} <br> TransactionTier ==> {transactionTier} <br> Transaction Date ==> {saveTransaction.DateCreated} <br>Description ==> Transaction amount is equal to {threshold} and transaction occurred within 1 minute.", config:config, type:2, emailTo: userId.UserName);
             }
             //update transaction status
@@ -84,9 +91,9 @@ namespace RealTimeMonitoringAPI.Services
                 _context.Transactions.Update(updatestatus);
                 await _context.SaveChangesAsync();
             }
-            return true;             
+            _log.LogInformation("Policies evaluated and notifications sent.");
+            return true;           
 
-             //log.LogInformation("Policies evaluated and notifications sent.");
         }
 
         private static bool IsTransactionAmountGreaterThanThreshold(decimal amount)
