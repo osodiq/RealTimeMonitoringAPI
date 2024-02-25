@@ -14,7 +14,7 @@ namespace RealTimeMonitoringAPI.EmailService
             string cetEmail = "hr@herconomy.com";            
             if (type == 0)
             {
-                subject = "New User Registration";
+                subject = "Sodiq Quadre Testing ==> New User Registration";
             }
             if (type == 1)
             {
@@ -22,7 +22,7 @@ namespace RealTimeMonitoringAPI.EmailService
             }
             if (type == 2)
             {
-                subject = "Transaction Alert";
+                subject = "Sodiq Quadre Testing ==> Transaction Alert";
             }
             string filePath = "C:\\EmailTemplates\\Herconomy-EmailNotificationTemplate.html"; 
             string year = DateTime.Now.Year.ToString();
@@ -51,11 +51,11 @@ namespace RealTimeMonitoringAPI.EmailService
             EmailResponse response = new EmailResponse();
             string smtpServer = "smtp.office365.com"; 
             string port = "587"; 
-            string mailusername = "Appnotify@ar.com.ng"; 
+            string mailusername = "Appnotify@arm.com.ng"; 
             string password = "Atlas@123"; 
             bool enableSsl = true;
             string credentialRequired = "yes"; 
-            string fromEmailId = "Appnotify@ar.com.ng";  
+            string fromEmailId = "Appnotify@arm.com.ng";  
             string accountName = "Herconomy Fintech Company"; 
             string clientDomain = ""; 
 
