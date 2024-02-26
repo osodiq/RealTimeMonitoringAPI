@@ -10,11 +10,11 @@ namespace RealTimeMonitoringAPI.EmailService
         {
             string emailMessage = "";
             string subject = "";
-            string cetNumber = "012715002"; 
-            string cetEmail = "hr@herconomy.com";            
+            string cetNumber = "100012715002";
+            string cetEmail = "hr@herconomy.com";
             if (type == 0)
             {
-                subject = "Sodiq Quadre Testing ==> New User Registration";
+                subject = "New User Registration";
             }
             if (type == 1)
             {
@@ -22,9 +22,9 @@ namespace RealTimeMonitoringAPI.EmailService
             }
             if (type == 2)
             {
-                subject = "Sodiq Quadre Testing ==> Transaction Alert";
+                subject = "Transaction Alert";
             }
-            string filePath = "C:\\EmailTemplates\\Herconomy-EmailNotificationTemplate.html"; 
+            string filePath = "C:\\EmailTemplates\\Herconomy-EmailNotificationTemplate.html";
             string year = DateTime.Now.Year.ToString();
             if (System.IO.File.Exists(filePath))
             {
@@ -49,15 +49,15 @@ namespace RealTimeMonitoringAPI.EmailService
         public static void SendEmailNotificationAsync(EmailRequest request, IConfiguration config)
         {
             EmailResponse response = new EmailResponse();
-            string smtpServer = "smtp.office365.com"; 
-            string port = "587"; 
-            string mailusername = "Appnotify@arm.com.ng"; 
-            string password = "Atlas@123"; 
+            string smtpServer = "smtp.office365.com";
+            string port = "587";
+            string mailusername = "appnotify.com.ng";
+            string password = "Atlas@123";
             bool enableSsl = true;
-            string credentialRequired = "yes"; 
-            string fromEmailId = "Appnotify@arm.com.ng";  
-            string accountName = "Herconomy Fintech Company"; 
-            string clientDomain = ""; 
+            string credentialRequired = "yes";
+            string fromEmailId = "appnotify.com.ng";
+            string accountName = "Herconomy Fintech Company";
+            string clientDomain = "";
 
             MailMessage mailMessage = new MailMessage();
             SmtpClient smtpClient = new SmtpClient(smtpServer, Convert.ToInt16(port));
